@@ -119,6 +119,50 @@ export const DiamondIcon = (props) => (
   </svg>
 )
 
+/**
+ * Official Implement AI logo — "Implement" in text + "AI" in purple badge + ®
+ * Props: height (default 32), variant ("dark" for dark bg / white text, "light" for light bg / black text)
+ */
+export const IAILogo = ({ height = 32, variant = 'dark', style, className, ...props }) => {
+  const textColor = variant === 'dark' ? '#FFFFFF' : '#1E1E1E'
+  const scale = height / 32
+  return (
+    <svg width={200 * scale} height={height} viewBox="0 0 200 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={style} className={className} {...props}>
+      {/* "Implement" text */}
+      <text
+        x="0"
+        y="24"
+        fontFamily="'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif"
+        fontSize="26"
+        fontWeight="800"
+        fill={textColor}
+        letterSpacing="-0.5"
+      >Implement</text>
+      {/* Purple rounded badge with "AI" */}
+      <rect x="144" y="2" width="40" height="28" rx="6" fill="#6B30FF" />
+      <text
+        x="164"
+        y="23"
+        fontFamily="'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif"
+        fontSize="20"
+        fontWeight="800"
+        fill="#FFFFFF"
+        textAnchor="middle"
+      >AI</text>
+      {/* ® symbol */}
+      <text
+        x="188"
+        y="10"
+        fontFamily="'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif"
+        fontSize="8"
+        fontWeight="400"
+        fill={textColor}
+        opacity="0.6"
+      >&#174;</text>
+    </svg>
+  )
+}
+
 export const LockIcon = (props) => (
   <svg {...s} {...props}>
     <rect x="3" y="11" width="18" height="11" rx="2" />

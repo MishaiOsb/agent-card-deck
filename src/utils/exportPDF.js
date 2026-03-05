@@ -31,11 +31,20 @@ export async function exportToPDF(deck, signoffs = {}) {
   doc.setFillColor(...COLORS.royalViolet)
   doc.rect(0, H - 8, W, 8, 'F')
 
-  // Logo
-  doc.setTextColor(...COLORS.aquaGreen)
-  doc.setFontSize(14)
+  // Logo — "Implement" in white + "AI" in purple badge
   doc.setFont('helvetica', 'bold')
-  doc.text('IMPLEMENT AI', W / 2, 45, { align: 'center' })
+  doc.setFontSize(16)
+  doc.setTextColor(...COLORS.white)
+  const logoTextW = doc.getTextWidth('Implement ')
+  const logoX = (W - logoTextW - 14) / 2
+  doc.text('Implement', logoX, 45)
+  // AI badge
+  const aiX = logoX + logoTextW + 1
+  doc.setFillColor(...COLORS.royalViolet)
+  doc.roundedRect(aiX, 37, 14, 10, 2, 2, 'F')
+  doc.setTextColor(...COLORS.white)
+  doc.setFontSize(11)
+  doc.text('AI', aiX + 7, 44.5, { align: 'center' })
 
   // Title
   doc.setTextColor(...COLORS.white)

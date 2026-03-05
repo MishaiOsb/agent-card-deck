@@ -3,7 +3,7 @@ import { SECTION_A_FIELDS } from '../data/agentTemplates'
 import { exportToPDF } from '../utils/exportPDF'
 import { exportToPPTX } from '../utils/exportPPTX'
 import { buildShareURL } from '../utils/shareLink'
-import { AgentIcon, ShareIcon, FileTextIcon, SlidesIcon, InfoIcon, CheckCircleIcon, ClipboardIcon, TargetIcon } from './Icons'
+import { AgentIcon, ShareIcon, FileTextIcon, SlidesIcon, InfoIcon, CheckCircleIcon, ClipboardIcon, TargetIcon, IAILogo } from './Icons'
 import './DeckPresenter.css'
 
 export default function DeckPresenter({ deck, clientInfo, onBack, onHome, theme, onToggleTheme }) {
@@ -104,7 +104,7 @@ export default function DeckPresenter({ deck, clientInfo, onBack, onHome, theme,
         <div className="slide" key={currentSlide}>
           {slide.type === 'cover' && (
             <div className="slide-cover">
-              <div className="cover-logo">&#9670; <span>IMPLEMENT AI</span></div>
+              <div className="cover-logo"><IAILogo height={36} variant={theme === 'dark' ? 'dark' : 'light'} /></div>
               <h1>{clientInfo.projectName || 'Agent Implementation Deck'}</h1>
               <div className="cover-meta">
                 <span className="cover-company">{clientInfo.companyName}</span>

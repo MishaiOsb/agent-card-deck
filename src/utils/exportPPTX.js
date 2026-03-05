@@ -45,9 +45,20 @@ export async function exportToPPTX(deck, signoffs = {}) {
   // ====== COVER SLIDE ======
   const coverSlide = pptx.addSlide({ masterName: 'BRAND_DARK' })
 
-  coverSlide.addText('IMPLEMENT AI', {
-    x: 0, y: 1.2, w: '100%', fontSize: 14, color: C.aquaGreen,
-    bold: true, align: 'center', charSpacing: 4,
+  // Logo — "Implement" in white + "AI" in purple badge
+  coverSlide.addText([
+    { text: 'Implement ', options: { fontSize: 18, color: C.white, bold: true } },
+  ], {
+    x: 2.8, y: 1.15, w: 3, h: 0.4, align: 'right',
+  })
+  coverSlide.addShape(pptx.ShapeType.roundRect, {
+    x: 5.85, y: 1.15, w: 0.65, h: 0.4,
+    fill: { color: C.royalViolet },
+    rectRadius: 0.08,
+  })
+  coverSlide.addText('AI', {
+    x: 5.85, y: 1.15, w: 0.65, h: 0.4, fontSize: 14,
+    color: C.white, bold: true, align: 'center', valign: 'middle',
   })
 
   coverSlide.addText(deck.clientInfo.projectName || 'Agent Implementation Deck', {

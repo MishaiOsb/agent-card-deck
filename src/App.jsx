@@ -4,7 +4,7 @@ import DeckPresenter from './components/DeckPresenter'
 import ClientSetup from './components/ClientSetup'
 import { AGENT_TYPES } from './data/agentTemplates'
 import { getSharedDeckFromURL } from './utils/shareLink'
-import { ClipboardIcon, TargetIcon, LinkIcon, ChartBarIcon } from './components/Icons'
+import { ClipboardIcon, TargetIcon, LinkIcon, ChartBarIcon, IAILogo } from './components/Icons'
 import './App.css'
 
 function rehydrateAgents(agents) {
@@ -84,8 +84,7 @@ function App() {
         <div className="home-screen">
           <div className="home-hero">
             <div className="logo-mark">
-              <span className="logo-icon">&#9670;</span>
-              <span className="logo-text">IMPLEMENT AI</span>
+              <IAILogo height={40} variant="dark" />
             </div>
             <h1>Agent Card Deck</h1>
             <p className="subtitle">Interactive specification & delivery toolkit for client presentations</p>
