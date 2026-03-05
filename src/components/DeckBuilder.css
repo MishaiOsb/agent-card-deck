@@ -279,6 +279,7 @@
   border: 1.5px solid var(--border);
   border-radius: var(--radius);
   text-align: left;
+  color: var(--text);
   transition: all 0.2s;
 }
 
