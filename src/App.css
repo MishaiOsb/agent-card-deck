@@ -1,0 +1,100 @@
+.app {
+  min-height: 100vh;
+}
+
+/* Home Screen */
+.home-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--hero-gradient);
+  padding: 40px 20px;
+}
+
+.home-hero {
+  text-align: center;
+  max-width: 900px;
+}
+
+.logo-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.logo-icon {
+  font-size: 32px;
+  color: var(--accent);
+}
+
+.logo-text {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: var(--accent);
+}
+
+.home-hero h1 {
+  font-size: 52px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 12px;
+  line-height: 1.1;
+}
+
+.home-hero .subtitle {
+  font-size: 18px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 36px;
+}
+
+.home-actions {
+  margin-bottom: 60px;
+}
+
+.home-actions .btn-primary {
+  font-size: 17px;
+  padding: 16px 40px;
+}
+
+.home-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 20px;
+}
+
+.feature-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-lg);
+  padding: 28px 20px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.feature-card:hover {
+  background: rgba(107, 48, 255, 0.15);
+  border-color: rgba(107, 48, 255, 0.3);
+  transform: translateY(-4px);
+}
+
+.feature-icon {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.feature-card h3 {
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.feature-card p {
+  color: rgba(255,255,255,0.5);
+  font-size: 13px;
+  line-height: 1.5;
+}
