@@ -304,3 +304,34 @@
   color: var(--text-light);
   line-height: 1.4;
 }
+
+/* Dark mode fixes for agent picker readability */
+[data-theme="dark"] .agent-picker {
+  background: var(--surface-raised);
+}
+
+[data-theme="dark"] .agent-picker h3 {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .picker-subtitle {
+  color: #A8A0BA;
+}
+
+[data-theme="dark"] .picker-card {
+  background: #1E1E30;
+  border-color: #3A3A52;
+}
+
+[data-theme="dark"] .picker-card:hover {
+  background: #252540;
+  border-color: var(--agent-color);
+}
+
+[data-theme="dark"] .picker-name {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .picker-desc {
+  color: #C0B8D0;
+}
