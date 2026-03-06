@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { SECTION_A_FIELDS } from '../data/agentTemplates'
+import { SECTION_A_FIELDS, SEETHENDO_FRAMEWORK } from '../data/agentTemplates'
 import { exportToPDF } from '../utils/exportPDF'
 import { exportToPPTX } from '../utils/exportPPTX'
 import { buildShareURL } from '../utils/shareLink'
@@ -123,20 +123,138 @@ export default function DeckPresenter({ deck, clientInfo, onBack, onHome, theme,
             </div>
           )}
 
+          {slide.type === 'seethendo-intro' && (
+            <div className="slide-seethendo-intro">
+              <div className="std-intro-badge">Our Methodology</div>
+              <h2>
+                <span className="std-see">See.</span>{' '}
+                <span className="std-then">Then</span>{' '}
+                <span className="std-do">Do.</span>
+              </h2>
+              <p className="std-principle">Insights Before Action &mdash; Always</p>
+              <div className="std-two-stages">
+                {SEETHENDO_FRAMEWORK.stages.map(stage => (
+                  <div key={stage.number} className="std-stage-card" style={{ borderTopColor: stage.color }}>
+                    <div className="std-stage-number" style={{ background: stage.color }}>Stage {stage.number}</div>
+                    <h3>{stage.name}</h3>
+                    <p className="std-stage-verb">{stage.verb}</p>
+                    <p className="std-stage-desc">{stage.description}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="std-footnote">We never automate what we don't understand. Analyst Agents observe first. Only then do Interactive and Action Agents execute.</p>
+            </div>
+          )}
+
+          {slide.type === 'seethendo-framework' && (
+            <div className="slide-seethendo-framework">
+              <h2>Three Dimensions of Value</h2>
+              <p className="slide-subtitle">Every agent is deployed to impact at least one dimension</p>
+              <div className="std-dimensions">
+                {SEETHENDO_FRAMEWORK.dimensions.map(dim => (
+                  <div key={dim.name} className="std-dim-card">
+                    <div className="std-dim-symbol" style={{ background: dim.color }}>{dim.symbol}</div>
+                    <h3>{dim.name}</h3>
+                    <div className="std-dim-row insight">
+                      <span className="std-dim-label">Insight</span>
+                      <span>{dim.insight}</span>
+                    </div>
+                    <div className="std-dim-row action">
+                      <span className="std-dim-label">Action</span>
+                      <span>{dim.action}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {slide.type === 'seethendo-agents' && (
+            <div className="slide-seethendo-agents">
+              <h2>Three Types of Digital Worker</h2>
+              <p className="slide-subtitle">Each deployed at the right stage of the journey</p>
+              <div className="std-worker-types">
+                {SEETHENDO_FRAMEWORK.workerTypes.map(wt => (
+                  <div key={wt.name} className="std-worker-card" style={{ borderTopColor: wt.color }}>
+                    <div className="std-worker-stage-tag" style={{
+                      background: wt.stage === 1 ? 'rgba(13,234,186,0.12)' : 'rgba(107,48,255,0.1)',
+                      color: wt.stage === 1 ? '#0DEABA' : '#6B30FF',
+                    }}>
+                      Stage {wt.stage} &middot; {wt.stage === 1 ? 'Insights' : 'Action'}
+                    </div>
+                    <h3 style={{ color: wt.color }}>{wt.name}</h3>
+                    <p className="std-worker-verb">{wt.verb}</p>
+                    <p className="std-worker-desc">{wt.description}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="std-data-streams">
+                <h4>Six Data Streams We Analyse</h4>
+                <p className="std-streams-note">Read-only. No workflow changes. No disruption.</p>
+                <div className="std-streams-row">
+                  {SEETHENDO_FRAMEWORK.dataStreams.map((stream, i) => (
+                    <span key={stream} className="std-stream-pill">{stream}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
           {slide.type === 'overview' && (
             <div className="slide-overview">
               <h2>Agent Overview</h2>
               <p className="slide-subtitle">Digital knowledge workers configured for {clientInfo.companyName}</p>
-              <div className="overview-grid">
-                {deck.agents.map(agent => (
-                  <div key={agent.id} className="overview-card" style={{ borderColor: agent.type.color }}>
-                    <span className="overview-icon"><AgentIcon templateId={agent.templateId} style={{ width: 28, height: 28 }} /></span>
-                    <h3>{agent.data.agentName || agent.type.name}</h3>
-                    <span className="overview-type" style={{ color: agent.type.color }}>{agent.type.name}</span>
-                    <p className="overview-obj">{agent.data.purpose || agent.data.objective || 'Objective not set'}</p>
+
+              {deck.agents.some(a => a.type.seethendo?.stage === 1) && (
+                <>
+                  <div className="overview-stage-label">
+                    <span className="overview-stage-badge" style={{ background: '#0DEABA' }}>Stage 1</span>
+                    <span>Insights &mdash; See What's Hidden</span>
                   </div>
-                ))}
-              </div>
+                  <div className="overview-grid">
+                    {deck.agents.filter(a => a.type.seethendo?.stage === 1).map(agent => (
+                      <div key={agent.id} className="overview-card" style={{ borderColor: agent.type.color }}>
+                        <span className="overview-icon"><AgentIcon templateId={agent.templateId} style={{ width: 28, height: 28 }} /></span>
+                        <h3>{agent.data.agentName || agent.type.name}</h3>
+                        <span className="overview-type" style={{ color: agent.type.color }}>{agent.type.name}</span>
+                        <p className="overview-obj">{agent.data.purpose || 'Objective not set'}</p>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {deck.agents.some(a => a.type.seethendo?.stage === 2) && (
+                <>
+                  <div className="overview-stage-label">
+                    <span className="overview-stage-badge" style={{ background: '#6B30FF' }}>Stage 2</span>
+                    <span>Action &mdash; Speak &amp; Do</span>
+                  </div>
+                  <div className="overview-grid">
+                    {deck.agents.filter(a => a.type.seethendo?.stage === 2).map(agent => (
+                      <div key={agent.id} className="overview-card" style={{ borderColor: agent.type.color }}>
+                        <span className="overview-icon"><AgentIcon templateId={agent.templateId} style={{ width: 28, height: 28 }} /></span>
+                        <h3>{agent.data.agentName || agent.type.name}</h3>
+                        <span className="overview-type" style={{ color: agent.type.color }}>{agent.type.name}</span>
+                        <p className="overview-obj">{agent.data.purpose || 'Objective not set'}</p>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {!deck.agents.some(a => a.type.seethendo) && (
+                <div className="overview-grid">
+                  {deck.agents.map(agent => (
+                    <div key={agent.id} className="overview-card" style={{ borderColor: agent.type.color }}>
+                      <span className="overview-icon"><AgentIcon templateId={agent.templateId} style={{ width: 28, height: 28 }} /></span>
+                      <h3>{agent.data.agentName || agent.type.name}</h3>
+                      <span className="overview-type" style={{ color: agent.type.color }}>{agent.type.name}</span>
+                      <p className="overview-obj">{agent.data.purpose || 'Objective not set'}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
@@ -149,6 +267,14 @@ export default function DeckPresenter({ deck, clientInfo, onBack, onHome, theme,
                   <span className="agent-slide-badge" style={{ background: slide.agent.type.color }}>
                     {slide.agent.type.name}
                   </span>
+                  {slide.agent.type.seethendo && (
+                    <span className="agent-stage-badge" style={{
+                      background: slide.agent.type.seethendo.stage === 1 ? 'rgba(13,234,186,0.12)' : 'rgba(107,48,255,0.1)',
+                      color: slide.agent.type.seethendo.stage === 1 ? '#0DEABA' : '#6B30FF',
+                    }}>
+                      Stage {slide.agent.type.seethendo.stage}: {slide.agent.type.seethendo.workerVerb}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -414,6 +540,9 @@ export default function DeckPresenter({ deck, clientInfo, onBack, onHome, theme,
 function buildSlides(deck) {
   const slides = [
     { type: 'cover', title: 'Cover' },
+    { type: 'seethendo-intro', title: 'See. Then Do.' },
+    { type: 'seethendo-framework', title: 'Three Dimensions' },
+    { type: 'seethendo-agents', title: 'Digital Workers' },
     { type: 'overview', title: 'Overview' },
   ]
 

@@ -568,7 +568,7 @@
 
 .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-.slide-dots { display: flex; gap: 6px; }
+.slide-dots { display: flex; gap: 6px; overflow-x: auto; max-width: 50vw; }
 
 .dot {
   width: 10px;
@@ -708,4 +708,289 @@
   justify-content: center;
   z-index: 100;
   backdrop-filter: blur(4px);
+}
+
+/* ========== Seethendo Intro Slide ========== */
+.slide-seethendo-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 440px;
+  justify-content: center;
+}
+
+.std-intro-badge {
+  display: inline-block;
+  padding: 4px 16px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  background: rgba(107, 48, 255, 0.08);
+  color: var(--primary);
+  margin-bottom: 24px;
+}
+
+.slide-seethendo-intro h2 {
+  font-size: 44px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  line-height: 1.1;
+}
+
+.std-see { color: #0DEABA; }
+.std-then { color: var(--text-muted); font-weight: 400; }
+.std-do { color: var(--primary); }
+
+.std-principle {
+  font-size: 16px;
+  color: var(--text-light);
+  margin-bottom: 36px;
+}
+
+.std-two-stages {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+  max-width: 620px;
+  margin-bottom: 32px;
+}
+
+.std-stage-card {
+  padding: 24px 20px;
+  background: var(--surface-alt);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  border-top: 3px solid;
+  text-align: left;
+}
+
+.std-stage-number {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.std-stage-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.std-stage-verb {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.std-stage-desc {
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+.std-footnote {
+  font-size: 12px;
+  color: var(--text-muted);
+  max-width: 520px;
+  line-height: 1.6;
+}
+
+/* ========== Seethendo Framework Slide ========== */
+.slide-seethendo-framework h2,
+.slide-seethendo-agents h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.std-dimensions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.std-dim-card {
+  padding: 24px 20px;
+  background: var(--surface-alt);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.std-dim-symbol {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 800;
+  color: white;
+  margin: 0 auto 14px;
+}
+
+.std-dim-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.std-dim-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  margin-bottom: 6px;
+  text-align: left;
+}
+
+.std-dim-row.insight { background: rgba(13, 234, 186, 0.08); }
+.std-dim-row.action { background: rgba(107, 48, 255, 0.08); }
+[data-theme="dark"] .std-dim-row.insight { background: rgba(13, 234, 186, 0.12); }
+[data-theme="dark"] .std-dim-row.action { background: rgba(107, 48, 255, 0.12); }
+
+.std-dim-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  width: 48px;
+}
+
+/* ========== Seethendo Workers Slide ========== */
+.std-worker-types {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.std-worker-card {
+  padding: 20px;
+  background: var(--surface-alt);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  border-top: 3px solid;
+}
+
+.std-worker-stage-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.std-worker-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.std-worker-verb {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.std-worker-desc {
+  font-size: 12px;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+.std-data-streams {
+  padding: 20px 24px;
+  background: var(--surface-alt);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.std-data-streams h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.std-streams-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 14px;
+}
+
+.std-streams-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.std-stream-pill {
+  padding: 6px 16px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(13, 234, 186, 0.1);
+  color: #19D3C5;
+}
+
+[data-theme="dark"] .std-stream-pill {
+  background: rgba(13, 234, 186, 0.15);
+  color: #0DEABA;
+}
+
+/* ========== Overview Stage Grouping ========== */
+.overview-stage-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-light);
+  margin-bottom: 12px;
+  margin-top: 24px;
+}
+
+.slide-overview .overview-stage-label:first-of-type {
+  margin-top: 8px;
+}
+
+.overview-stage-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 700;
+  color: white;
+}
+
+/* ========== Agent Slide Stage Badge ========== */
+.agent-stage-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-left: 8px;
 }

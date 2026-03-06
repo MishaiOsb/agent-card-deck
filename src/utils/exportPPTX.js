@@ -1,5 +1,5 @@
 import PptxGenJS from 'pptxgenjs'
-import { SECTION_A_FIELDS } from '../data/agentTemplates'
+import { SECTION_A_FIELDS, SEETHENDO_FRAMEWORK } from '../data/agentTemplates'
 
 // Implement AI brand colours (hex for pptxgenjs)
 const C = {
@@ -80,6 +80,222 @@ export async function exportToPPTX(deck, signoffs = {}) {
   coverSlide.addText(metaParts, {
     x: 0, y: 3.6, w: '100%', fontSize: 11, color: C.textMuted,
     align: 'center',
+  })
+
+  // ====== SEETHENDO INTRO SLIDE ======
+  const stdIntro = pptx.addSlide({ masterName: 'BRAND_DARK' })
+
+  stdIntro.addText('Our Methodology', {
+    x: 0.5, y: 0.4, w: 9, fontSize: 9, color: C.textMuted,
+    bold: true, align: 'center', letterSpacing: 3,
+  })
+
+  stdIntro.addText([
+    { text: 'See.', options: { fontSize: 44, color: C.aquaGreen, bold: true } },
+    { text: '  Then  ', options: { fontSize: 44, color: C.textMuted, bold: false } },
+    { text: 'Do.', options: { fontSize: 44, color: C.royalViolet, bold: true } },
+  ], { x: 0, y: 0.7, w: '100%', h: 0.7, align: 'center', valign: 'middle' })
+
+  stdIntro.addText('Insights Before Action — Always', {
+    x: 0, y: 1.5, w: '100%', fontSize: 14, color: C.textMuted, align: 'center',
+  })
+
+  // Two stage cards
+  const stages = SEETHENDO_FRAMEWORK.stages
+  stages.forEach((stage, idx) => {
+    const cardW = 4.0
+    const cardX = idx === 0 ? 0.7 : 5.3
+    const cardY = 2.2
+    const stageColor = stage.color.replace('#', '')
+
+    stdIntro.addShape(pptx.ShapeType.roundRect, {
+      x: cardX, y: cardY, w: cardW, h: 2.0,
+      fill: { color: '2A2A3A' },
+      rectRadius: 0.1,
+    })
+
+    // Top accent
+    stdIntro.addShape(pptx.ShapeType.rect, {
+      x: cardX, y: cardY, w: cardW, h: 0.06,
+      fill: { color: stageColor },
+    })
+
+    // Stage number circle
+    stdIntro.addShape(pptx.ShapeType.ellipse, {
+      x: cardX + 0.2, y: cardY + 0.2, w: 0.45, h: 0.45,
+      fill: { color: stageColor },
+    })
+    stdIntro.addText(String(stage.number), {
+      x: cardX + 0.2, y: cardY + 0.2, w: 0.45, h: 0.45,
+      fontSize: 14, color: C.white, bold: true, align: 'center', valign: 'middle',
+    })
+
+    stdIntro.addText(`Stage ${stage.number}: ${stage.name}`, {
+      x: cardX + 0.8, y: cardY + 0.25, w: cardW - 1, fontSize: 14,
+      color: C.white, bold: true,
+    })
+
+    stdIntro.addText(stage.verb.toUpperCase(), {
+      x: cardX + 0.8, y: cardY + 0.55, w: cardW - 1, fontSize: 9,
+      color: stageColor, bold: true,
+    })
+
+    stdIntro.addText(stage.description, {
+      x: cardX + 0.2, y: cardY + 0.95, w: cardW - 0.4, fontSize: 10,
+      color: C.textMuted, breakLine: true, lineSpacing: 14,
+    })
+  })
+
+  stdIntro.addText('Deploy analyst agents first. Only act once the data tells you where.', {
+    x: 0, y: 4.5, w: '100%', fontSize: 9, color: C.textMuted, align: 'center', italic: true,
+  })
+
+  // ====== SEETHENDO DIMENSIONS SLIDE ======
+  const stdDims = pptx.addSlide({ masterName: 'BRAND_LIGHT' })
+
+  stdDims.addText('Three Dimensions of Value', {
+    x: 0.5, y: 0.3, w: 9, fontSize: 22, color: C.deepCharcoal, bold: true,
+  })
+
+  stdDims.addText('Every agent maps to at least one dimension', {
+    x: 0.5, y: 0.75, w: 9, fontSize: 11, color: C.textLight,
+  })
+
+  SEETHENDO_FRAMEWORK.dimensions.forEach((dim, idx) => {
+    const cardW = 2.8
+    const cardX = 0.5 + idx * (cardW + 0.3)
+    const cardY = 1.2
+    const dimColor = dim.color.replace('#', '')
+
+    stdDims.addShape(pptx.ShapeType.roundRect, {
+      x: cardX, y: cardY, w: cardW, h: 2.8,
+      fill: { color: C.softIvory },
+      rectRadius: 0.1,
+    })
+
+    // Symbol circle
+    stdDims.addShape(pptx.ShapeType.ellipse, {
+      x: cardX + cardW / 2 - 0.3, y: cardY + 0.2, w: 0.6, h: 0.6,
+      fill: { color: dimColor },
+    })
+    stdDims.addText(dim.symbol, {
+      x: cardX + cardW / 2 - 0.3, y: cardY + 0.2, w: 0.6, h: 0.6,
+      fontSize: 18, color: C.white, bold: true, align: 'center', valign: 'middle',
+    })
+
+    stdDims.addText(dim.name, {
+      x: cardX + 0.1, y: cardY + 0.95, w: cardW - 0.2,
+      fontSize: 14, color: C.deepCharcoal, bold: true, align: 'center',
+    })
+
+    // Insight row
+    stdDims.addShape(pptx.ShapeType.roundRect, {
+      x: cardX + 0.15, y: cardY + 1.35, w: cardW - 0.3, h: 0.55,
+      fill: { color: 'E6FFF8' },
+      rectRadius: 0.05,
+    })
+    stdDims.addText('SEE', {
+      x: cardX + 0.25, y: cardY + 1.38, w: cardW - 0.5, fontSize: 7,
+      color: C.aquaGreen, bold: true,
+    })
+    stdDims.addText(dim.insight, {
+      x: cardX + 0.25, y: cardY + 1.55, w: cardW - 0.5, fontSize: 9,
+      color: C.deepCharcoal,
+    })
+
+    // Action row
+    stdDims.addShape(pptx.ShapeType.roundRect, {
+      x: cardX + 0.15, y: cardY + 2.05, w: cardW - 0.3, h: 0.55,
+      fill: { color: 'EEEAFF' },
+      rectRadius: 0.05,
+    })
+    stdDims.addText('DO', {
+      x: cardX + 0.25, y: cardY + 2.08, w: cardW - 0.5, fontSize: 7,
+      color: C.royalViolet, bold: true,
+    })
+    stdDims.addText(dim.action, {
+      x: cardX + 0.25, y: cardY + 2.25, w: cardW - 0.5, fontSize: 9,
+      color: C.deepCharcoal,
+    })
+  })
+
+  // ====== SEETHENDO WORKER TYPES SLIDE ======
+  const stdWorkers = pptx.addSlide({ masterName: 'BRAND_LIGHT' })
+
+  stdWorkers.addText('Three Digital Worker Types', {
+    x: 0.5, y: 0.3, w: 9, fontSize: 22, color: C.deepCharcoal, bold: true,
+  })
+
+  stdWorkers.addText('Each agent in your deck falls into one of these categories', {
+    x: 0.5, y: 0.75, w: 9, fontSize: 11, color: C.textLight,
+  })
+
+  SEETHENDO_FRAMEWORK.workerTypes.forEach((wt, idx) => {
+    const cardW = 2.8
+    const cardX = 0.5 + idx * (cardW + 0.3)
+    const cardY = 1.2
+    const wtColor = wt.color.replace('#', '')
+
+    stdWorkers.addShape(pptx.ShapeType.roundRect, {
+      x: cardX, y: cardY, w: cardW, h: 2.2,
+      fill: { color: C.softIvory },
+      rectRadius: 0.1,
+    })
+
+    // Top accent bar
+    stdWorkers.addShape(pptx.ShapeType.rect, {
+      x: cardX, y: cardY, w: cardW, h: 0.06,
+      fill: { color: wtColor },
+    })
+
+    // Stage tag
+    stdWorkers.addShape(pptx.ShapeType.roundRect, {
+      x: cardX + 0.15, y: cardY + 0.2, w: 0.9, h: 0.25,
+      fill: { color: wtColor },
+      rectRadius: 0.04,
+    })
+    stdWorkers.addText(`Stage ${wt.stage}`, {
+      x: cardX + 0.15, y: cardY + 0.2, w: 0.9, h: 0.25,
+      fontSize: 8, color: C.white, bold: true, align: 'center', valign: 'middle',
+    })
+
+    stdWorkers.addText(wt.name, {
+      x: cardX + 0.15, y: cardY + 0.6, w: cardW - 0.3,
+      fontSize: 13, color: C.deepCharcoal, bold: true,
+    })
+
+    stdWorkers.addText(wt.verb, {
+      x: cardX + 0.15, y: cardY + 0.9, w: cardW - 0.3,
+      fontSize: 10, color: wtColor, bold: true,
+    })
+
+    stdWorkers.addText(wt.description, {
+      x: cardX + 0.15, y: cardY + 1.2, w: cardW - 0.3,
+      fontSize: 9, color: C.textLight, breakLine: true, lineSpacing: 13,
+    })
+  })
+
+  // Data streams row
+  stdWorkers.addText('Data Streams These Agents Tap Into', {
+    x: 0.5, y: 3.7, w: 9, fontSize: 11, color: C.deepCharcoal, bold: true, align: 'center',
+  })
+
+  const streams = SEETHENDO_FRAMEWORK.dataStreams
+  const pillW = 1.3
+  const totalW = streams.length * pillW + (streams.length - 1) * 0.15
+  const startX = (10 - totalW) / 2
+  streams.forEach((stream, idx) => {
+    const px = startX + idx * (pillW + 0.15)
+    stdWorkers.addShape(pptx.ShapeType.roundRect, {
+      x: px, y: 4.05, w: pillW, h: 0.3,
+      fill: { color: C.softIvory },
+      line: { color: 'E0DAD4', width: 0.5 },
+      rectRadius: 0.15,
+    })
+    stdWorkers.addText(stream, {
+      x: px, y: 4.05, w: pillW, h: 0.3,
+      fontSize: 8, color: C.deepCharcoal, align: 'center', valign: 'middle',
+    })
   })
 
   // ====== OVERVIEW SLIDE ======

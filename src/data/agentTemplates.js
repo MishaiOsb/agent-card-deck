@@ -17,6 +17,7 @@ export const AGENT_TYPES = [
     icon: 'support',
     color: '#6B30FF',
     description: 'Customer support, inbound/outbound call handling, ticket response',
+    seethendo: { stage: 2, stageLabel: 'Action', workerType: 'Interactive Agent', workerVerb: 'Speak to the World' },
     sectionB: [
       { id: 'callDirection', label: 'Call Direction', type: 'select', options: ['Inbound', 'Outbound', 'Both'] },
       { id: 'greeting', label: 'Greeting Script', type: 'textarea', placeholder: 'Opening greeting when interaction begins...' },
@@ -40,6 +41,7 @@ export const AGENT_TYPES = [
     icon: 'analyst',
     color: '#0DEABA',
     description: 'Data analysis, reporting, insights generation, and revenue discovery',
+    seethendo: { stage: 1, stageLabel: 'Insights', workerType: 'Analyst Agent', workerVerb: 'See What\'s Hidden' },
     sectionB: [
       { id: 'dataSources', label: 'Data Sources', type: 'tags', placeholder: 'CRM, Call logs, Sales data, etc.' },
       { id: 'analysisType', label: 'Analysis Type', type: 'checklist', items: ['Trend Analysis', 'Revenue Discovery', 'Performance Metrics', 'Customer Segmentation', 'Anomaly Detection', 'Forecasting'] },
@@ -60,6 +62,7 @@ export const AGENT_TYPES = [
     icon: 'computer',
     color: '#2A2092',
     description: 'Automated browser and desktop tasks, data entry, system operations',
+    seethendo: { stage: 2, stageLabel: 'Action', workerType: 'Action Agent', workerVerb: 'Do the Work' },
     sectionB: [
       { id: 'taskType', label: 'Task Type', type: 'checklist', items: ['Data Entry', 'Form Filling', 'Web Scraping', 'File Management', 'System Navigation', 'Report Generation'] },
       { id: 'targetSystems', label: 'Target Systems', type: 'tags', placeholder: 'CRM, ERP, Web portals, etc.' },
@@ -82,6 +85,7 @@ export const AGENT_TYPES = [
     icon: 'sales',
     color: '#FF6629',
     description: 'Lead nurturing, pipeline management, outbound outreach, and demo scheduling',
+    seethendo: { stage: 2, stageLabel: 'Action', workerType: 'Interactive Agent', workerVerb: 'Speak to the World' },
     sectionB: [
       { id: 'salesStage', label: 'Pipeline Stage Focus', type: 'select', options: ['Lead Generation', 'Lead Qualification', 'Demo Scheduling', 'Follow-up', 'Closing Support'] },
       { id: 'targetAudience', label: 'Target Audience', type: 'textarea', placeholder: 'Describe the ideal customer profile' },
@@ -103,6 +107,7 @@ export const AGENT_TYPES = [
     icon: 'task',
     color: '#FFCD18',
     description: 'Workflow automation, scheduled tasks, cross-system orchestration',
+    seethendo: { stage: 2, stageLabel: 'Action', workerType: 'Action Agent', workerVerb: 'Do the Work' },
     sectionB: [
       { id: 'triggerType', label: 'Trigger Type', type: 'select', options: ['Scheduled', 'Event-based', 'Manual', 'Webhook', 'Conditional'] },
       { id: 'triggerConditions', label: 'Trigger Conditions', type: 'steps', placeholder: 'What starts this automation?' },
@@ -166,4 +171,35 @@ export const DEFAULT_TIMELINE = {
     { name: 'Monitoring & Support', duration: '1 week' },
   ],
   totalEstimate: '3-5 weeks'
+}
+
+// ===== Seethendo Framework: See. Then Do. =====
+export const SEETHENDO_FRAMEWORK = {
+  stages: [
+    {
+      number: 1,
+      name: 'Insights',
+      verb: 'See',
+      description: 'Deploy Analyst Agents first. Read-only, low-risk, no workflow changes. Make the domain visible before you try to change it.',
+      color: '#0DEABA',
+    },
+    {
+      number: 2,
+      name: 'Action',
+      verb: 'Do',
+      description: 'Deploy Interactive and Action Agents after evidence is gathered. Act on data, not assumptions.',
+      color: '#6B30FF',
+    },
+  ],
+  dimensions: [
+    { symbol: '\u00A3', name: 'Revenue', insight: 'Detect hidden revenue', action: 'Capture that revenue', color: '#0DEABA' },
+    { symbol: 'C', name: 'Capacity', insight: 'Find the time sinks', action: 'Eliminate those drains', color: '#6B30FF' },
+    { symbol: 'E', name: 'Experience', insight: 'Expose quality gaps', action: 'Fix the experience', color: '#FF6629' },
+  ],
+  dataStreams: ['Calls', 'Emails', 'Tickets', 'Meetings', 'Messaging', 'CRM & Systems'],
+  workerTypes: [
+    { name: 'Analyst Agent', stage: 1, verb: 'See What\'s Hidden', description: 'Read-only agents that observe, score, classify, and surface intelligence from data that already exists.', color: '#0DEABA' },
+    { name: 'Interactive Agent', stage: 2, verb: 'Speak to the World', description: 'Voice, chat, and messaging agents that interact with customers, prospects, and employees.', color: '#6B30FF' },
+    { name: 'Action Agent', stage: 2, verb: 'Do the Work', description: 'Agents that operate computers, navigate SaaS platforms, process documents, and update CRMs.', color: '#2A2092' },
+  ],
 }

@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
-import { SECTION_A_FIELDS } from '../data/agentTemplates'
+import { SECTION_A_FIELDS, SEETHENDO_FRAMEWORK } from '../data/agentTemplates'
 
 // Implement AI brand colours
 const COLORS = {
@@ -71,6 +71,170 @@ export async function exportToPDF(deck, signoffs = {}) {
     doc.setTextColor(...COLORS.textMuted)
     doc.text(`Contact: ${deck.clientInfo.contactName}${deck.clientInfo.contactRole ? ` (${deck.clientInfo.contactRole})` : ''}`, W / 2, 115, { align: 'center' })
   }
+
+  // ====== Seethendo Intro Page ======
+  doc.addPage()
+  doc.setFillColor(...COLORS.deepCharcoal)
+  doc.rect(0, 0, W, H, 'F')
+  doc.setFillColor(...COLORS.royalViolet)
+  doc.rect(0, H - 6, W, 6, 'F')
+
+  doc.setFontSize(9)
+  doc.setTextColor(...COLORS.lavenderMist)
+  doc.setFont('helvetica', 'bold')
+  doc.text('OUR METHODOLOGY', W / 2, 32, { align: 'center' })
+
+  doc.setFontSize(36)
+  doc.setTextColor(...COLORS.aquaGreen)
+  doc.text('See.', W / 2 - 42, 52, { align: 'center' })
+  doc.setTextColor(...COLORS.textMuted)
+  doc.setFont('helvetica', 'normal')
+  doc.text('Then', W / 2, 52, { align: 'center' })
+  doc.setFont('helvetica', 'bold')
+  doc.setTextColor(...COLORS.royalViolet)
+  doc.text('Do.', W / 2 + 38, 52, { align: 'center' })
+
+  doc.setFontSize(13)
+  doc.setFont('helvetica', 'normal')
+  doc.setTextColor(...COLORS.lavenderMist)
+  doc.text('Insights Before Action \u2014 Always', W / 2, 66, { align: 'center' })
+
+  SEETHENDO_FRAMEWORK.stages.forEach((stage, idx) => {
+    const cardW = (W - 60) / 2
+    const cardX = idx === 0 ? 20 : W / 2 + 10
+    const cardY = 80
+    doc.setFillColor(40, 40, 58)
+    doc.roundedRect(cardX, cardY, cardW, 52, 3, 3, 'F')
+    const sc = hexToRgb(stage.color)
+    doc.setFillColor(...sc)
+    doc.rect(cardX, cardY, cardW, 3, 'F')
+    doc.roundedRect(cardX + 8, cardY + 10, 24, 6, 2, 2, 'F')
+    doc.setFontSize(7)
+    doc.setTextColor(...COLORS.white)
+    doc.text(`Stage ${stage.number}`, cardX + 20, cardY + 14.2, { align: 'center' })
+    doc.setFontSize(16)
+    doc.setFont('helvetica', 'bold')
+    doc.text(stage.name, cardX + 8, cardY + 26)
+    doc.setFontSize(10)
+    doc.setFont('helvetica', 'italic')
+    doc.setTextColor(...COLORS.textMuted)
+    doc.text(stage.verb, cardX + 8, cardY + 33)
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(8)
+    const sdLines = doc.splitTextToSize(stage.description, cardW - 16)
+    doc.text(sdLines, cardX + 8, cardY + 40)
+  })
+
+  doc.setFontSize(8)
+  doc.setFont('helvetica', 'normal')
+  doc.setTextColor(...COLORS.textMuted)
+  doc.text('We never automate what we don\'t understand. Analyst Agents observe first.', W / 2, H - 18, { align: 'center' })
+
+  // ====== Seethendo Dimensions Page ======
+  doc.addPage()
+  drawPageHeader(doc, 'Three Dimensions of Value', W)
+
+  let dy = 38
+  doc.setFontSize(11)
+  doc.setFont('helvetica', 'normal')
+  doc.setTextColor(...COLORS.textLight)
+  doc.text('Every agent is deployed to impact at least one dimension', 20, dy)
+  dy += 16
+
+  SEETHENDO_FRAMEWORK.dimensions.forEach((dim, idx) => {
+    const dimW = (W - 52) / 3
+    const dimX = 20 + idx * (dimW + 6)
+    doc.setFillColor(...COLORS.softIvory)
+    doc.roundedRect(dimX, dy, dimW, 62, 3, 3, 'F')
+    const dc = hexToRgb(dim.color)
+    doc.setFillColor(...dc)
+    doc.circle(dimX + dimW / 2, dy + 14, 8, 'F')
+    doc.setTextColor(...COLORS.white)
+    doc.setFontSize(14)
+    doc.setFont('helvetica', 'bold')
+    doc.text(dim.symbol, dimX + dimW / 2, dy + 15, { align: 'center', baseline: 'middle' })
+    doc.setTextColor(...COLORS.deepCharcoal)
+    doc.setFontSize(13)
+    doc.text(dim.name, dimX + dimW / 2, dy + 30, { align: 'center' })
+
+    // Insight row
+    doc.setFillColor(230, 255, 248)
+    doc.roundedRect(dimX + 6, dy + 36, dimW - 12, 10, 2, 2, 'F')
+    doc.setFontSize(7)
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(...COLORS.textMuted)
+    doc.text('INSIGHT', dimX + 10, dy + 42)
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(8)
+    doc.setTextColor(...COLORS.deepCharcoal)
+    doc.text(dim.insight, dimX + 28, dy + 42)
+
+    // Action row
+    doc.setFillColor(237, 235, 255)
+    doc.roundedRect(dimX + 6, dy + 48, dimW - 12, 10, 2, 2, 'F')
+    doc.setFontSize(7)
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(...COLORS.textMuted)
+    doc.text('ACTION', dimX + 10, dy + 54)
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(8)
+    doc.setTextColor(...COLORS.deepCharcoal)
+    doc.text(dim.action, dimX + 28, dy + 54)
+  })
+
+  // ====== Seethendo Workers Page ======
+  doc.addPage()
+  drawPageHeader(doc, 'Three Types of Digital Worker', W)
+
+  let wy = 38
+  doc.setFontSize(11)
+  doc.setFont('helvetica', 'normal')
+  doc.setTextColor(...COLORS.textLight)
+  doc.text('Each deployed at the right stage of the journey', 20, wy)
+  wy += 16
+
+  SEETHENDO_FRAMEWORK.workerTypes.forEach((wt, idx) => {
+    const wtW = (W - 52) / 3
+    const wtX = 20 + idx * (wtW + 6)
+    const wc = hexToRgb(wt.color)
+    doc.setFillColor(...COLORS.softIvory)
+    doc.roundedRect(wtX, wy, wtW, 45, 3, 3, 'F')
+    doc.setFillColor(...wc)
+    doc.rect(wtX, wy, wtW, 3, 'F')
+    doc.setFontSize(7)
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(...wc)
+    doc.text(`STAGE ${wt.stage}`, wtX + 6, wy + 11)
+    doc.setFontSize(12)
+    doc.setTextColor(...COLORS.deepCharcoal)
+    doc.text(wt.name, wtX + 6, wy + 20)
+    doc.setFont('helvetica', 'italic')
+    doc.setFontSize(9)
+    doc.setTextColor(...COLORS.textMuted)
+    doc.text(wt.verb, wtX + 6, wy + 27)
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(8)
+    doc.setTextColor(...COLORS.textLight)
+    const wLines = doc.splitTextToSize(wt.description, wtW - 12)
+    doc.text(wLines, wtX + 6, wy + 34)
+  })
+
+  // Data streams
+  wy += 58
+  doc.setFontSize(12)
+  doc.setTextColor(...COLORS.deepCharcoal)
+  doc.setFont('helvetica', 'bold')
+  doc.text('Six Data Streams We Analyse', W / 2, wy, { align: 'center' })
+  wy += 6
+  doc.setFontSize(9)
+  doc.setFont('helvetica', 'italic')
+  doc.setTextColor(...COLORS.textMuted)
+  doc.text('Read-only. No workflow changes. No disruption.', W / 2, wy, { align: 'center' })
+  wy += 10
+  doc.setFont('helvetica', 'bold')
+  doc.setFontSize(10)
+  doc.setTextColor(...COLORS.aquaTeal)
+  doc.text(SEETHENDO_FRAMEWORK.dataStreams.join('   \u00B7   '), W / 2, wy, { align: 'center' })
 
   // ====== Overview Page ======
   doc.addPage()
