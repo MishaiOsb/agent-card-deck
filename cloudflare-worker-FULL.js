@@ -5,9 +5,10 @@
  *   1. `fetch(request)` → `fetch(request, env, ctx)` — required for KV access
  *   2. CORS: added GET method + X-Deck-Token, X-Deck-Pod headers
  *   3. New routes BEFORE the POST-only check:
- *        POST /deck/save   — upsert a deck from the Agent Card Deck app
- *        GET  /deck/list   — list decks for a pod (dashboard reads this)
- *        GET  /deck/get    — fetch a single full deck record
+ *        POST /deck/save    — upsert a deck from the Agent Card Deck app
+ *        GET  /deck/list    — list decks for a pod (dashboard reads this)
+ *        GET  /deck/get     — fetch a single full deck record
+ *        POST /deck/delete  — delete a deck from KV (dashboard only)
  *   4. New handler functions at the bottom: handleDeckSave, handleDeckList,
  *      handleDeckGet, plus checkDeckAuth, slugifyClientName, deckJson helpers
  *
@@ -52,6 +53,9 @@ export default {
     }
     if (path === 'deck/get' && request.method === 'GET') {
       return handleDeckGet(url, request, env, headers);
+    }
+    if (path === 'deck/delete' && request.method === 'POST') {
+      return handleDeckDelete(request, env, headers);
     }
 
     // All remaining routes below are POST-only
@@ -362,4 +366,50 @@ async function handleDeckGet(url, request, env, headers) {
   }
 
   return deckJson({ ok: true, deck: JSON.parse(raw) }, 200, headers);
+}
+
+/**
+ * POST /deck/delete
+ * Body: { deckId, pod }
+ * Permanently removes a deck record from KV. No undo.
+ */
+async function handleDeckDelete(request, env, headers) {
+  if (!env.DECKS) {
+    return deckJson({ ok: false, error: 'kv-not-bound' }, 500, headers);
+  }
+  if (!checkDeckAuth(request, env)) {
+    return deckJson({ ok: false, error: 'unauthorized' }, 401, headers);
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return deckJson({ ok: false, error: 'invalid-json' }, 400, headers);
+  }
+
+  const { deckId, pod } = body;
+  if (!deckId || !pod) {
+    return deckJson({ ok: false, error: 'missing-fields', required: ['deckId', 'pod'] }, 400, headers);
+  }
+
+  const key = `deck:${pod}:${deckId}`;
+
+  // Verify it exists before deleting (so we can report whether deletion was a no-op)
+  let existed = false;
+  try {
+    const raw = await env.DECKS.get(key);
+    existed = !!raw;
+  } catch (e) {
+    console.error('[Deck] KV get (pre-delete) failed:', e.message);
+  }
+
+  try {
+    await env.DECKS.delete(key);
+  } catch (e) {
+    console.error('[Deck] KV delete failed:', e.message);
+    return deckJson({ ok: false, error: 'storage-failed' }, 500, headers);
+  }
+
+  return deckJson({ ok: true, deckId, deleted: existed }, 200, headers);
 }
