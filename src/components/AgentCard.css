@@ -536,3 +536,468 @@
   font-size: 12px;
   padding: 6px 10px;
 }
+
+/* ============================================================
+   Call-Prep-style refresh (v2)
+   ============================================================ */
+
+/* Spec toolbar: small label + large title + filter/guidance actions */
+.spec-toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.spec-toolbar .section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--card-color, var(--accent, #6B30FF));
+  margin-bottom: 6px;
+}
+
+.spec-toolbar .section-title {
+  font-family: 'Playfair Display', 'DM Sans', serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text, #1E1E1E);
+  margin: 0;
+}
+
+.spec-toolbar .section-sub {
+  font-size: 13px;
+  color: var(--text-muted, #6b6b76);
+  margin-top: 4px;
+}
+
+.spec-toolbar-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Toggle pill (Must Haves only) */
+.toggle-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted, #6b6b76);
+  padding: 6px 12px;
+  background: var(--surface-alt, #f8f6f2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.toggle-pill:has(input:checked) {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #991b1b;
+}
+
+.toggle-pill input {
+  accent-color: #991b1b;
+  cursor: pointer;
+}
+
+/* Ghost button */
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-ghost:hover {
+  background: var(--surface-alt, #f8f6f2);
+  color: var(--text);
+}
+
+/* Template guidance box — hidden on print */
+.template-guidance {
+  background: #FFF8E1;
+  border: 2px dashed #FFB300;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.template-guidance strong {
+  color: #E65100;
+  display: block;
+  margin-bottom: 4px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.template-guidance p {
+  color: #5D4037;
+  margin: 0;
+}
+
+.inline-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 10px;
+  margin: 0 3px;
+  vertical-align: middle;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.inline-badge.must {
+  background: rgba(239, 68, 68, 0.12);
+  color: #991b1b;
+}
+
+@media print {
+  .template-guidance,
+  .spec-toolbar-actions,
+  .toggle-pill,
+  .btn-ghost { display: none !important; }
+}
+
+/* ============================================================
+   Q-Block — numbered category card (matches Call Prep template)
+   ============================================================ */
+.q-block {
+  background: var(--surface, #fff);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.q-block .q-header {
+  background: color-mix(in srgb, var(--q-color, #6B30FF) 10%, transparent);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.q-number {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--q-color, #6B30FF);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.q-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.q-category {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.q-sublabel {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.q-body {
+  padding: 16px 18px;
+}
+
+/* ============================================================
+   Q-Field — single question row
+   ============================================================ */
+.q-field {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.q-field:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.q-field:first-child {
+  padding-top: 0;
+}
+
+.q-field-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.q-field-question {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.45;
+  flex: 1;
+  min-width: 0;
+}
+
+.q-field-why {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 8px;
+  font-style: normal;
+}
+
+.q-field-input {
+  margin-top: 6px;
+}
+
+.required-star {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+/* Priority badge */
+.priority-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 3px 9px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Empty state when filter hides everything */
+.empty-filter-state {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--text-muted);
+  font-size: 13px;
+  background: var(--surface-alt, #fafaf8);
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+}
+
+/* ============================================================
+   Scope — two-column in/out of scope with colored borders
+   ============================================================ */
+.scope-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+@media (max-width: 700px) {
+  .scope-grid { grid-template-columns: 1fr; }
+}
+
+.scope-col {
+  border-radius: 10px;
+  padding: 16px 18px;
+  border: 2px solid;
+}
+
+.scope-col.in-scope {
+  border-color: #0DEABA;
+  background: rgba(13, 234, 186, 0.06);
+}
+
+.scope-col.out-scope {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.scope-col-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.scope-col-header h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+
+.scope-col.in-scope .scope-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #0DEABA;
+}
+
+.scope-col.out-scope .scope-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ef4444;
+}
+
+.scope-why {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.45;
+  margin-bottom: 10px;
+}
+
+.scope-col textarea {
+  width: 100%;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+/* Info boxes for assumptions + acceptance (Call Prep pattern) */
+.scope-extras {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 700px) {
+  .scope-extras { grid-template-columns: 1fr; }
+}
+
+.info-box {
+  border-left: 4px solid var(--accent-purple, #6B30FF);
+  background: rgba(107, 48, 255, 0.05);
+  border-radius: 0 10px 10px 0;
+  padding: 14px 16px;
+}
+
+.info-box.violet {
+  border-left-color: #6B30FF;
+  background: rgba(107, 48, 255, 0.05);
+}
+
+.info-box.teal {
+  border-left-color: #19D3C5;
+  background: rgba(25, 211, 197, 0.06);
+}
+
+.info-box.orange {
+  border-left-color: #FF6629;
+  background: rgba(255, 102, 41, 0.05);
+}
+
+.info-box h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.info-box .scope-why {
+  margin-bottom: 8px;
+}
+
+.info-box textarea {
+  width: 100%;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+/* Dark mode tweaks */
+[data-theme="dark"] .q-block {
+  background: #1E1E2A;
+  border-color: #2a2a3a;
+}
+
+[data-theme="dark"] .q-header {
+  border-bottom-color: #2a2a3a;
+}
+
+[data-theme="dark"] .q-field {
+  border-bottom-color: #2a2a3a;
+}
+
+[data-theme="dark"] .q-field-question {
+  color: #F8F2ED;
+}
+
+[data-theme="dark"] .q-field-why {
+  color: #a0a0b0;
+}
+
+[data-theme="dark"] .template-guidance {
+  background: rgba(255, 179, 0, 0.08);
+  border-color: #FFB300;
+}
+
+[data-theme="dark"] .template-guidance p {
+  color: #d4b896;
+}
+
+[data-theme="dark"] .scope-col textarea,
+[data-theme="dark"] .info-box textarea {
+  background: #161622;
+  border-color: #2a2a3a;
+  color: #F8F2ED;
+}
+
+[data-theme="dark"] .scope-col.in-scope {
+  background: rgba(13, 234, 186, 0.08);
+}
+
+[data-theme="dark"] .scope-col.out-scope {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+[data-theme="dark"] .info-box.violet {
+  background: rgba(107, 48, 255, 0.12);
+}
+
+[data-theme="dark"] .info-box.teal {
+  background: rgba(25, 211, 197, 0.1);
+}
+
+[data-theme="dark"] .spec-toolbar .section-title {
+  color: #F8F2ED;
+}
+
+[data-theme="dark"] .toggle-pill {
+  background: #161622;
+  border-color: #2a2a3a;
+  color: #a0a0b0;
+}
