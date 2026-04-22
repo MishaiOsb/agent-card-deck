@@ -255,6 +255,114 @@
   margin-bottom: 24px;
 }
 
+/* ============================================================
+   Agent slide — color-coded info boxes (Call Prep style)
+   ============================================================ */
+.agent-info-box {
+  border-left: 4px solid var(--primary);
+  background: rgba(107, 48, 255, 0.05);
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px;
+  margin-bottom: 14px;
+}
+
+.agent-info-box.violet { border-left-color: #6B30FF; background: rgba(107, 48, 255, 0.06); }
+.agent-info-box.orange { border-left-color: #FF6629; background: rgba(255, 102, 41, 0.06); }
+.agent-info-box.teal   { border-left-color: #19D3C5; background: rgba(25, 211, 197, 0.07); }
+.agent-info-box.red    { border-left-color: #ef4444; background: rgba(239, 68, 68, 0.06); }
+
+.agent-info-box h4 {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.agent-info-box.violet h4 { color: #6B30FF; }
+.agent-info-box.orange h4 { color: #FF6629; }
+.agent-info-box.teal h4   { color: #0a9d7c; }
+.agent-info-box.red h4    { color: #991b1b; }
+
+.agent-info-box p {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text);
+  margin: 0;
+}
+
+.agent-info-box.steps-box .steps-ol {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.agent-info-box.steps-box .steps-ol li {
+  padding-left: 4px;
+  margin-bottom: 2px;
+}
+
+.tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.tag-chip {
+  display: inline-block;
+  font-size: 12px;
+  padding: 3px 10px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #991b1b;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .agent-info-box {
+  background: rgba(107, 48, 255, 0.1);
+}
+
+[data-theme="dark"] .agent-info-box.violet { background: rgba(107, 48, 255, 0.15); }
+[data-theme="dark"] .agent-info-box.orange { background: rgba(255, 102, 41, 0.12); }
+[data-theme="dark"] .agent-info-box.teal   { background: rgba(25, 211, 197, 0.12); }
+[data-theme="dark"] .agent-info-box.red    { background: rgba(239, 68, 68, 0.12); }
+
+[data-theme="dark"] .agent-info-box p { color: #F8F2ED; }
+[data-theme="dark"] .agent-info-box.steps-box .steps-ol { color: #F8F2ED; }
+[data-theme="dark"] .tag-chip { background: rgba(239, 68, 68, 0.18); color: #ff8a8a; }
+
+/* Section B — category blocks (matches builder q-blocks) */
+.agent-category-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.agent-category-header {
+  background: color-mix(in srgb, var(--cat-color, var(--primary)) 12%, transparent);
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+
+.agent-category-block .agent-slide-grid {
+  padding: 14px 18px;
+  margin-bottom: 0;
+}
+
+[data-theme="dark"] .agent-category-block {
+  background: #1E1E2A;
+  border-color: #2a2a3a;
+}
+
+[data-theme="dark"] .agent-category-header {
+  color: #F8F2ED;
+  border-bottom-color: #2a2a3a;
+}
+
 .agent-slide-field h4 {
   font-size: 12px;
   font-weight: 600;

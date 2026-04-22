@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { SECTION_A_FIELDS, SEETHENDO_FRAMEWORK } from '../data/agentTemplates'
+import { SECTION_A_FIELDS, SEETHENDO_FRAMEWORK, groupSectionBByCategory } from '../data/agentTemplates'
 import { exportToPDF } from '../utils/exportPDF'
 import { exportToPPTX } from '../utils/exportPPTX'
 import { buildShareURL } from '../utils/shareLink'
@@ -287,39 +287,83 @@ export default function DeckPresenter({ deck, clientInfo, onBack, onHome, theme,
                 </div>
               </div>
 
-              {/* Section A - Universal */}
-              <div className="agent-section-label">
-                <span className="section-marker section-a-marker">A</span>
-                <span>Universal Specification</span>
-              </div>
-              <div className="agent-slide-grid">
-                {SECTION_A_FIELDS.filter(f => slide.agent.data[f.id]).map(field => (
-                  <div key={field.id} className="agent-slide-field">
-                    <h4>{field.label}</h4>
-                    <div className="field-value">
-                      {renderFieldValue(field, slide.agent.data[field.id])}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              {/* ==== Section A — key fields as color-coded info boxes ==== */}
+              {slide.agent.data.purpose && (
+                <div className="agent-info-box violet">
+                  <h4>Purpose</h4>
+                  <p>{slide.agent.data.purpose}</p>
+                </div>
+              )}
 
-              {/* Section B - Type-Specific */}
+              {/* 6 Agreed Steps — highlighted as the core workflow */}
+              {Array.isArray(slide.agent.data.agreedSteps) && slide.agent.data.agreedSteps.length > 0 && (
+                <div className="agent-info-box violet steps-box">
+                  <h4>Agreed Steps</h4>
+                  <ol className="steps-ol">
+                    {slide.agent.data.agreedSteps.map((step, i) => (
+                      <li key={i}>{step}</li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+
+              {/* Escalation Rule — orange (safety) */}
+              {slide.agent.data.escalationRule && (
+                <div className="agent-info-box orange">
+                  <h4>Escalation Rule</h4>
+                  <p>{slide.agent.data.escalationRule}</p>
+                </div>
+              )}
+
+              {/* Approved Copy — teal (if filled) */}
+              {slide.agent.data.approvedCopy && (
+                <div className="agent-info-box teal">
+                  <h4>Approved Copy</h4>
+                  <p style={{ whiteSpace: 'pre-wrap' }}>{slide.agent.data.approvedCopy}</p>
+                </div>
+              )}
+
+              {/* Out-of-Scope List — red */}
+              {Array.isArray(slide.agent.data.outOfScopeList) && slide.agent.data.outOfScopeList.length > 0 && (
+                <div className="agent-info-box red">
+                  <h4>Out-of-Scope</h4>
+                  <div className="tag-list">
+                    {slide.agent.data.outOfScopeList.map((item, i) => (
+                      <span key={i} className="tag-chip">{item}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ==== Section B — grouped by category (mirrors builder) ==== */}
               {slide.agent.type.sectionB && slide.agent.type.sectionB.some(f => slide.agent.data[f.id]) && (
                 <>
                   <div className="agent-section-label">
                     <span className="section-marker section-b-marker" style={{ background: slide.agent.type.color }}>B</span>
                     <span>{slide.agent.type.name} Parameters</span>
                   </div>
-                  <div className="agent-slide-grid">
-                    {slide.agent.type.sectionB.filter(f => slide.agent.data[f.id]).map(field => (
-                      <div key={field.id} className="agent-slide-field">
-                        <h4>{field.label}</h4>
-                        <div className="field-value">
-                          {renderFieldValue(field, slide.agent.data[field.id])}
+                  {groupSectionBByCategory(slide.agent.type.sectionB).map(group => {
+                    const filledFields = group.fields.filter(f => {
+                      const v = slide.agent.data[f.id]
+                      return v && (Array.isArray(v) ? v.length > 0 : true)
+                    })
+                    if (filledFields.length === 0) return null
+                    return (
+                      <div key={group.category} className="agent-category-block" style={{ '--cat-color': slide.agent.type.color }}>
+                        <div className="agent-category-header">{group.category}</div>
+                        <div className="agent-slide-grid">
+                          {filledFields.map(field => (
+                            <div key={field.id} className="agent-slide-field">
+                              <h4>{field.label}</h4>
+                              <div className="field-value">
+                                {renderFieldValue(field, slide.agent.data[field.id])}
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    ))}
-                  </div>
+                    )
+                  })}
                 </>
               )}
 
