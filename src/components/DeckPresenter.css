@@ -604,6 +604,23 @@
   box-shadow: 0 6px 20px rgba(107, 48, 255, 0.35);
 }
 
+/* Submit to Dashboard — aqua/teal to distinguish from Share */
+.btn-submit {
+  background: linear-gradient(135deg, #0DEABA, #19D3C5);
+  color: #0a3d34;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(13, 234, 186, 0.25);
+}
+
+.btn-submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(13, 234, 186, 0.35);
+}
+
+[data-theme="dark"] .btn-submit {
+  color: #0a3d34;
+}
+
 /* Share Modal */
 .share-modal {
   background: var(--surface);

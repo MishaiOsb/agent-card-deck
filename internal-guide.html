@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Card Deck — Internal Guide</title>
+  <style>
+    :root {
+      --bg: #F8F2ED;
+      --surface: #FFFFFF;
+      --text: #1E1E1E;
+      --muted: #5A5A6E;
+      --purple: #6B30FF;
+      --indigo: #2A2092;
+      --green: #0DEABA;
+      --orange: #FF6629;
+      --yellow: #FFCD18;
+      --lavender: #D0BFFA;
+      --border: #E0DAD4;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 0 1.5rem;
+      border-bottom: 3px solid var(--purple);
+      margin-bottom: 2rem;
+    }
+
+    header .logo {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+    }
+
+    header .logo span {
+      background: var(--purple);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      margin-left: 2px;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      margin: 0.5rem 0 0.25rem;
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--lavender);
+      color: var(--indigo);
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin: 2.5rem 0 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      margin: 1.5rem 0 0.5rem;
+      color: var(--indigo);
+    }
+
+    p, li { color: #333; }
+
+    section {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .step-flow {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin: 1rem 0;
+    }
+
+    .step-flow .step {
+      flex: 1;
+      min-width: 140px;
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      position: relative;
+      border: 1px solid var(--border);
+    }
+
+    .step-flow .step .num {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      border-radius: 50%;
+      background: var(--purple);
+      color: white;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .step-flow .step h4 {
+      font-size: 0.85rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .step-flow .step p {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .arrow {
+      display: flex;
+      align-items: center;
+      color: var(--purple);
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    ul, ol {
+      padding-left: 1.5rem;
+      margin: 0.5rem 0;
+    }
+
+    li { margin-bottom: 0.3rem; }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .card {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      border-left: 4px solid var(--purple);
+    }
+
+    .card h4 {
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .card p {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .card.green { border-left-color: var(--green); }
+    .card.orange { border-left-color: var(--orange); }
+    .card.yellow { border-left-color: var(--yellow); }
+    .card.indigo { border-left-color: var(--indigo); }
+
+    .slide-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+    }
+
+    .slide-table th {
+      background: var(--indigo);
+      color: white;
+      text-align: left;
+      padding: 0.6rem 1rem;
+    }
+
+    .slide-table td {
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .slide-table tr:nth-child(even) td {
+      background: #FAFAF8;
+    }
+
+    .slide-num {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      border-radius: 50%;
+      background: var(--lavender);
+      color: var(--indigo);
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-align: center;
+    }
+
+    .tip {
+      background: #F0EBFF;
+      border-left: 4px solid var(--purple);
+      padding: 0.75rem 1rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+    }
+
+    .tip strong { color: var(--purple); }
+
+    .warning {
+      background: #FFF8E6;
+      border-left: 4px solid var(--yellow);
+      padding: 0.75rem 1rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+    }
+
+    .warning strong { color: #B8860B; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 1rem; }
+      .two-col, .card-grid { grid-template-columns: 1fr; }
+      .step-flow { flex-direction: column; }
+      .arrow { transform: rotate(90deg); justify-content: center; }
+      section { padding: 1rem 1.25rem; }
+    }
+
+    .kbd {
+      background: #EEE;
+      border: 1px solid #CCC;
+      border-radius: 3px;
+      padding: 1px 6px;
+      font-size: 0.8rem;
+      font-family: monospace;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Implement <span>AI</span></div>
+  <h1>Agent Card Deck — Internal Guide</h1>
+  <p>How to build, present, and deliver agent specification decks</p>
+</header>
+
+<!-- ===== WHAT IS IT ===== -->
+<section>
+  <span class="badge">Overview</span>
+  <h2 style="margin-top:0.5rem; border:none; padding:0;">What is the Agent Card Deck?</h2>
+  <p>
+    The Agent Card Deck is an interactive web app for specifying, presenting, and delivering AI agent implementations to clients.
+    It turns our methodology into a structured, client-facing presentation that walks through <strong>why</strong> we do things
+    (See. Then Do.) before showing <strong>what</strong> we're building (individual agent cards).
+  </p>
+  <p style="margin-top:0.75rem;">
+    It replaces loose docs and slide decks with a single tool that handles the full journey: spec, present, sign-off, and export.
+  </p>
+
+  <div class="tip">
+    <strong>Live app:</strong> <a href="https://mishaiosb.github.io/agent-card-deck/" target="_blank">mishaiosb.github.io/agent-card-deck</a>
+    — works on any device, no login needed.
+  </div>
+</section>
+
+<!-- ===== WORKFLOW ===== -->
+<section>
+  <h2>Workflow — 4 Steps</h2>
+  <div class="step-flow">
+    <div class="step">
+      <div class="num">1</div>
+      <h4>Client Setup</h4>
+      <p>Company name, project, contact, meeting date</p>
+    </div>
+    <div class="arrow">&rarr;</div>
+    <div class="step">
+      <div class="num">2</div>
+      <h4>Build Deck</h4>
+      <p>Add agents, fill Section A + B, add backlog items</p>
+    </div>
+    <div class="arrow">&rarr;</div>
+    <div class="step">
+      <div class="num">3</div>
+      <h4>Present</h4>
+      <p>Walk through slides live with the client</p>
+    </div>
+    <div class="arrow">&rarr;</div>
+    <div class="step">
+      <div class="num">4</div>
+      <h4>Deliver</h4>
+      <p>Export PDF/PPTX, share link, collect sign-offs</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CLIENT SETUP ===== -->
+<section>
+  <h2>Step 1: Client Setup</h2>
+  <p>Click <strong>Create New Deck</strong> on the home page. Fill in the client details:</p>
+  <ul>
+    <li><strong>Company Name</strong> (required) — appears on the cover slide and throughout</li>
+    <li><strong>Project Name</strong> — e.g. "AI Agent Implementation Phase 1"</li>
+    <li><strong>Primary Contact</strong> (required) — the client stakeholder</li>
+    <li><strong>Contact Role / Email / Industry</strong> — optional context fields</li>
+    <li><strong>Meeting Date</strong> — defaults to today, shown on cover</li>
+    <li><strong>Presenter</strong> — your name, shown on cover</li>
+  </ul>
+  <p style="margin-top:0.75rem;">Click <strong>Continue to Deck Builder</strong> when done.</p>
+</section>
+
+<!-- ===== DECK BUILDER ===== -->
+<section>
+  <h2>Step 2: Deck Builder</h2>
+  <p>This is the main workspace. The left sidebar shows your agent cards and backlog; the right panel is the editor.</p>
+
+  <h3>Adding an Agent</h3>
+  <p>Click <strong>+ Add Agent Card</strong> and pick one of the 5 agent types:</p>
+
+  <div class="card-grid">
+    <div class="card" style="border-left-color:#6B30FF;">
+      <h4>Support Agent</h4>
+      <p>Calls, tickets, chat — customer-facing interactions</p>
+    </div>
+    <div class="card green">
+      <h4>Analyst Agent</h4>
+      <p>Data analysis, reporting, revenue discovery</p>
+    </div>
+    <div class="card indigo">
+      <h4>Computer Use Agent</h4>
+      <p>Browser automation, data entry, system tasks</p>
+    </div>
+    <div class="card orange">
+      <h4>Sales/Outreach Agent</h4>
+      <p>Lead nurturing, pipeline, outbound, demos</p>
+    </div>
+    <div class="card yellow">
+      <h4>Task/Automation Agent</h4>
+      <p>Workflow automation, scheduled jobs, orchestration</p>
+    </div>
+  </div>
+
+  <h3>Section A — Universal Specification</h3>
+  <p>Every agent has these fields regardless of type:</p>
+  <ul>
+    <li><strong>Agent Name</strong> — a descriptive name (e.g. "Inbound Triage Agent")</li>
+    <li><strong>Purpose</strong> — what is this agent's primary objective?</li>
+    <li><strong>6 Agreed Steps</strong> — the exact workflow this agent follows (max 6 steps)</li>
+    <li><strong>Approved Copy</strong> — scripts, templates, or messaging it uses</li>
+    <li><strong>Escalation Rule</strong> — when does this agent hand off to a human?</li>
+    <li><strong>Out-of-Scope List</strong> — things this agent explicitly does NOT handle</li>
+  </ul>
+
+  <h3>Section B — Type-Specific Parameters</h3>
+  <p>Each agent type has its own set of parameters. For example, a Support Agent has call direction,
+    greeting script, channels, and operating hours. An Analyst has data sources, analysis type, and report frequency.
+    Fill in what's relevant — not everything is required.</p>
+
+  <h3>Backlog</h3>
+  <p>Use the <strong>Out-of-Scope Backlog</strong> at the bottom of the sidebar to log items that came up
+    but are out of scope for this phase. Each item gets a priority (Low / Medium / High). These appear on
+    the Backlog slide in the presentation.</p>
+
+  <h3>Agent Actions</h3>
+  <ul>
+    <li><strong>Duplicate</strong> — copy an agent card (useful for similar agents)</li>
+    <li><strong>Remove</strong> — delete an agent from the deck</li>
+    <li><strong>Rev 0/3</strong> — shows how many of the 3 allowed revisions have been used</li>
+  </ul>
+</section>
+
+<!-- ===== PRESENTING ===== -->
+<section>
+  <h2>Step 3: Presenting the Deck</h2>
+  <p>Click <strong>Present Deck</strong> from the builder to enter presentation mode. The deck has 9+ slides
+    (depending on agent count):</p>
+
+  <table class="slide-table">
+    <thead>
+      <tr><th>#</th><th>Slide</th><th>What It Shows</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="slide-num">1</span></td>
+        <td><strong>Cover</strong></td>
+        <td>Logo, project name, company, date, presenter, agent count</td>
+      </tr>
+      <tr>
+        <td><span class="slide-num">2</span></td>
+        <td><strong>See. Then Do.</strong></td>
+        <td>Our methodology — Stage 1 (Insights) vs Stage 2 (Action). Sets up the "why"</td>
+      </tr>
+      <tr>
+        <td><span class="slide-num">3</span></td>
+        <td><strong>Three Dimensions</strong></td>
+        <td>Revenue, Capacity, Experience — each with an Insight (See) and Action (Do) pair</td>
+      </tr>
+      <tr>
+        <td><span class="slide-num">4</span></td>
+        <td><strong>Digital Workers</strong></td>
+        <td>Analyst, Interactive, and Action agents + the 6 data streams we analyse</td>
+      </tr>
+      <tr>
+        <td><span class="slide-num">5</span></td>
+        <td><strong>Agent Overview</strong></td>
+        <td>All agents grouped by Stage 1 / Stage 2 with summary cards</td>
+      </tr>
+      <tr>
+        <td><span class="slide-num">6+</span></td>
+        <td><strong>Agent Cards</strong></td>
+        <td>One slide per agent — full Section A + B spec with sign-off checkbox</td>
+      </tr>
+      <tr>
+        <td><span class="slide-num">—</span></td>
+        <td><strong>Delivery Gates</strong></td>
+        <td>3 gates (Spec &rarr; QA &rarr; Live) + Fix vs Change framework</td>
+      </tr>
+      <tr>
+        <td><span class="slide-num">—</span></td>
+        <td><strong>Timeline</strong></td>
+        <td>5-phase roadmap + revision policy (max 3 revisions per agent)</td>
+      </tr>
+      <tr>
+        <td><span class="slide-num">—</span></td>
+        <td><strong>Backlog</strong></td>
+        <td>Future phase items with priority levels (only if items exist)</td>
+      </tr>
+      <tr>
+        <td><span class="slide-num">—</span></td>
+        <td><strong>Summary</strong></td>
+        <td>Stats, next steps, and export call-to-action</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Presenter Controls</h3>
+  <ul>
+    <li><strong>Previous / Next</strong> buttons or slide dots to navigate</li>
+    <li><strong>Progress bar</strong> shows how far through the deck you are</li>
+    <li><strong>Dark/Light mode toggle</strong> — switch mid-presentation to suit the room</li>
+    <li><strong>Edit Deck</strong> — jump back to the builder to make changes</li>
+  </ul>
+
+  <h3>Client Sign-Off</h3>
+  <p>Each agent slide has a <strong>sign-off checkbox</strong> at the bottom. Tick it during the meeting
+    when the client approves that agent's spec. The Summary slide shows the sign-off count.</p>
+</section>
+
+<!-- ===== SEETHENDO ===== -->
+<section>
+  <h2>The "See. Then Do." Methodology</h2>
+  <p>Slides 2–4 establish our core principle: <strong>Insights Before Action — Always.</strong>
+    These are static methodology slides that require no data entry. Use them to set context before diving into
+    the individual agents.</p>
+
+  <h3>How to Present These Slides</h3>
+
+  <div class="two-col">
+    <div class="card green">
+      <h4>Stage 1: See (Insights)</h4>
+      <p>We start by deploying Analyst Agents that are read-only.
+        No workflow changes, no risk. They observe your existing data
+        and surface what's hidden — missed revenue, time sinks, quality gaps.</p>
+    </div>
+    <div class="card">
+      <h4>Stage 2: Do (Action)</h4>
+      <p>Only after we have evidence do we deploy Interactive or Action agents.
+        These agents talk to customers, operate systems, and automate tasks —
+        but only where the data tells us to.</p>
+    </div>
+  </div>
+
+  <h3>Three Dimensions of Value</h3>
+  <p>Every agent we build maps to at least one of these:</p>
+  <div class="card-grid">
+    <div class="card green">
+      <h4>Revenue (£)</h4>
+      <p><strong>See:</strong> Detect hidden revenue<br><strong>Do:</strong> Capture that revenue</p>
+    </div>
+    <div class="card">
+      <h4>Capacity (C)</h4>
+      <p><strong>See:</strong> Find the time sinks<br><strong>Do:</strong> Eliminate those drains</p>
+    </div>
+    <div class="card orange">
+      <h4>Experience (E)</h4>
+      <p><strong>See:</strong> Expose quality gaps<br><strong>Do:</strong> Fix the experience</p>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>Talking point:</strong> "We never automate what we don't understand. Analyst agents observe first.
+    Only then do Interactive and Action agents execute."
+  </div>
+</section>
+
+<!-- ===== FIX vs CHANGE ===== -->
+<section>
+  <h2>Fix vs Change Framework</h2>
+  <p>This appears on the Delivery Gates slide. It sets expectations for what happens after delivery:</p>
+
+  <div class="card-grid">
+    <div class="card green">
+      <h4>Fix (In-Scope)</h4>
+      <p>The agent isn't performing to the signed spec. This is a fix, not a change — it's covered.</p>
+      <p style="margin-top:0.25rem;font-size:0.75rem;"><em>Examples: wrong copy, escalation not triggering, steps not followed</em></p>
+    </div>
+    <div class="card yellow">
+      <h4>Change Request</h4>
+      <p>New work not in the Agent Card. Needs to be assessed and scoped separately.</p>
+      <p style="margin-top:0.25rem;font-size:0.75rem;"><em>Examples: new feature, different workflow, extra integration</em></p>
+    </div>
+    <div class="card orange">
+      <h4>Out-of-Type</h4>
+      <p>Requires a completely new agent card. The request falls outside this agent's type.</p>
+      <p style="margin-top:0.25rem;font-size:0.75rem;"><em>Examples: support agent asked to do sales, analyst asked to handle calls</em></p>
+    </div>
+  </div>
+
+  <div class="warning">
+    <strong>Why this matters:</strong> This framework prevents scope creep. If the client asks for something after sign-off,
+    you categorise it here. Fixes are covered. Changes go to backlog. Out-of-type means a new card.
+  </div>
+</section>
+
+<!-- ===== DELIVERY ===== -->
+<section>
+  <h2>Step 4: Exporting &amp; Sharing</h2>
+
+  <h3>Export Options</h3>
+  <p>From the presenter toolbar:</p>
+  <ul>
+    <li><strong>PDF</strong> — downloads a multi-page PDF with all slides including Seethendo methodology pages</li>
+    <li><strong>PPTX</strong> — downloads a PowerPoint file with branded master slides, ready for stakeholders</li>
+  </ul>
+  <p>Both exports include all slides: cover, methodology, overview, agent cards, gates, timeline, backlog, and summary.</p>
+
+  <h3>Share Link</h3>
+  <p>Click <strong>Share</strong> to generate a URL that contains the full deck data. Anyone with the link can
+    view the presentation — no login or setup needed.</p>
+
+  <div class="warning">
+    <strong>Note:</strong> The share link is a snapshot. If you edit the deck after sharing, existing links
+    won't update. Generate a new link after making changes.
+  </div>
+
+  <h3>Recommended Delivery Flow</h3>
+  <ol>
+    <li>Present live in the meeting using the web app</li>
+    <li>Collect sign-offs on each agent during the call</li>
+    <li>Export PDF/PPTX and send as the formal record</li>
+    <li>Share the link for anyone who missed the meeting</li>
+  </ol>
+</section>
+
+<!-- ===== TIPS ===== -->
+<section>
+  <h2>Tips for Running a Good Meeting</h2>
+  <ul>
+    <li><strong>Start with methodology</strong> — don't skip slides 2–4. They set the foundation and make the rest easier to discuss.</li>
+    <li><strong>Use dark mode</strong> for screen-sharing on calls — it's easier on the eyes and looks more polished.</li>
+    <li><strong>Switch to light mode</strong> for in-person projectors where dark backgrounds wash out.</li>
+    <li><strong>Fill in agent names before the meeting</strong> — even if Section B is incomplete, having named agents makes the overview slide useful.</li>
+    <li><strong>Use the backlog</strong> — when a client raises something out of scope, add it to backlog immediately. This shows you're listening without derailing the agenda.</li>
+    <li><strong>Get sign-off live</strong> — tick the checkbox while the client is watching. It creates accountability in the moment.</li>
+    <li><strong>Export immediately after</strong> — send the PDF within an hour of the meeting ending.</li>
+  </ul>
+</section>
+
+<!-- ===== QUICK REFERENCE ===== -->
+<section>
+  <h2>Quick Reference</h2>
+
+  <h3>Agent Type → Stage Mapping</h3>
+  <table class="slide-table">
+    <thead>
+      <tr><th>Agent Type</th><th>Stage</th><th>Worker Category</th><th>Verb</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Analyst Agent</td><td>Stage 1</td><td>Analyst Agent</td><td>See What's Hidden</td></tr>
+      <tr><td>Support Agent</td><td>Stage 2</td><td>Interactive Agent</td><td>Speak to the World</td></tr>
+      <tr><td>Sales/Outreach Agent</td><td>Stage 2</td><td>Interactive Agent</td><td>Speak to the World</td></tr>
+      <tr><td>Computer Use Agent</td><td>Stage 2</td><td>Action Agent</td><td>Do the Work</td></tr>
+      <tr><td>Task/Automation Agent</td><td>Stage 2</td><td>Action Agent</td><td>Do the Work</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Default Timeline</h3>
+  <table class="slide-table">
+    <thead>
+      <tr><th>Phase</th><th>Duration</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1. Specification &amp; Sign-off</td><td>1 week</td></tr>
+      <tr><td>2. Development &amp; Configuration</td><td>1–2 weeks</td></tr>
+      <tr><td>3. Internal QA &amp; Testing</td><td>3–5 days</td></tr>
+      <tr><td>4. Live Delivery Call</td><td>1 session</td></tr>
+      <tr><td>5. Monitoring &amp; Support</td><td>1 week</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:0.5rem; color: var(--muted); font-size:0.9rem;"><strong>Total estimate:</strong> 3–5 weeks</p>
+
+  <h3>Delivery Gates</h3>
+  <ol>
+    <li><strong>Spec Sign-Off</strong> — client reviews and approves the agent card</li>
+    <li><strong>Internal QA</strong> — team tests the agent against the signed spec</li>
+    <li><strong>Live Delivery</strong> — synchronous call: demo live, sign off in the room</li>
+  </ol>
+
+  <h3>Revision Policy</h3>
+  <p>Maximum <strong>3 revisions</strong> per agent. Fixes for in-scope issues are covered.
+    Change requests are logged for future phases. Out-of-type requests require a new agent card.</p>
+</section>
+
+<footer>
+  <p>Implement AI — Internal Use Only</p>
+  <p>Agent Card Deck Guide v1.0 — March 2026</p>
+</footer>
+
+</body>
+</html>

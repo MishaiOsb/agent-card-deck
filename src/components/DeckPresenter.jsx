@@ -3,7 +3,8 @@ import { SECTION_A_FIELDS, SEETHENDO_FRAMEWORK } from '../data/agentTemplates'
 import { exportToPDF } from '../utils/exportPDF'
 import { exportToPPTX } from '../utils/exportPPTX'
 import { buildShareURL } from '../utils/shareLink'
-import { AgentIcon, ShareIcon, FileTextIcon, SlidesIcon, InfoIcon, CheckCircleIcon, ClipboardIcon, TargetIcon, IAILogo } from './Icons'
+import { AgentIcon, ShareIcon, FileTextIcon, SlidesIcon, InfoIcon, CheckCircleIcon, ClipboardIcon, TargetIcon, CloudUploadIcon, IAILogo } from './Icons'
+import DashboardSubmit from './DashboardSubmit'
 import './DeckPresenter.css'
 
 export default function DeckPresenter({ deck, clientInfo, onBack, onHome, theme, onToggleTheme }) {
@@ -13,6 +14,7 @@ export default function DeckPresenter({ deck, clientInfo, onBack, onHome, theme,
   const [showShareModal, setShowShareModal] = useState(false)
   const [shareURL, setShareURL] = useState('')
   const [copied, setCopied] = useState(false)
+  const [showSubmitModal, setShowSubmitModal] = useState(false)
 
   const slides = buildSlides(deck)
   const slide = slides[currentSlide]
@@ -90,6 +92,13 @@ export default function DeckPresenter({ deck, clientInfo, onBack, onHome, theme,
           )}
           <button className="btn-share btn-sm btn-icon" onClick={handleShare}>
             <ShareIcon style={{ width: 14, height: 14 }} /> Share
+          </button>
+          <button
+            className="btn-submit btn-sm btn-icon"
+            onClick={() => setShowSubmitModal(true)}
+            title="Submit this deck to the IAI Pod Dashboard for delivery tracking"
+          >
+            <CloudUploadIcon style={{ width: 14, height: 14 }} /> Submit
           </button>
           <button className="btn-accent btn-sm btn-icon" onClick={handleExportPDF} disabled={exporting}>
             <FileTextIcon style={{ width: 14, height: 14 }} /> PDF
@@ -532,6 +541,14 @@ export default function DeckPresenter({ deck, clientInfo, onBack, onHome, theme,
             </div>
           </div>
         </div>
+      )}
+
+      {showSubmitModal && (
+        <DashboardSubmit
+          clientInfo={clientInfo}
+          deck={deck}
+          onClose={() => setShowSubmitModal(false)}
+        />
       )}
     </div>
   )
